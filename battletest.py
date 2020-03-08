@@ -72,5 +72,5 @@ def battletest():
 
     print "You won!"
     ennemy_dead = True
-    print "She crumbles to the ground, now that was a fight !"
+    print "She crumbles to the ground, now that was a fight!"
 battletest()
