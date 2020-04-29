@@ -149,7 +149,7 @@ class Enemy:
         self.environment = environment
         self.hint = hint
 
-battle_hint = "You have a much higher chance of success on your next attack when your ennemies are confused or very close."
+battle_hint = "You have a much higher chance of success on your next attack when your ennemies are confused."
 
 #Greta called
 Greta_pronouns = ["the woman", "she", "she", "she", "she", "the enemy", "the freak"]
@@ -1132,7 +1132,7 @@ def death(why, last_checkpoint, HP, hint):
     print "\nHint:", hint
     print "\n..."
     print "\nPlay again?\n"
-    choice = raw_input("\n(Type \"yes\" or \"no\".)\n\n> ").lower().split()
+    choice = raw_input("\n%s(Type \"yes\" or \"no\".)%s\n\n> " % (gray, default)).lower().split()
     while True:
         if "yes" in choice and "no" not in choice:
             april_found = False
@@ -1206,12 +1206,13 @@ def east_tower():
             print "\n\"I don't know what happened, something happened to Josh, and... my head's dizzy...\""
             print "\n\"It's all blurry, I've been having nightmares...\" she keeps on crying."
             print "\n\"Dad, this lady... she.. she kidnapped us while we were camping,\""
-            print "You say \"Don't worry about it, you're safe now, let's go. Can you walk?\""
-            print "\n\"Where are we?.. Where's Josh?..\"" 
+            print "\nYou say: \"Don't worry about it, you're safe now, let's go. Can you walk?\""
+            print "\n\"Where are we?.. Where's Josh?..\" She asks." 
             p_scroll()
-            print "\nYou start answering the question but she passes out in your arms."
-            print "\nProbably the shock or the drugs..."
+            print "\nYou start answering the question but she immediatley passes out in your arms."
+            print "\nProbably the shock or the spell..."
             print "\nYou pick her limp body up on your shoulder and decide it's time to head out of this hell-hole."
+            p_scroll()
 
     elif april_found == False:
         april_found = True
@@ -1332,7 +1333,7 @@ def west_tower():
             print specific_search
         elif "search" in choice:
             if flashlight:
-                if "chest" in choice: 
+                if "chest" in choice or "rings" in choice: 
                     print "\nThe chest's outter lining is carved with floral ornaments like trees, leaves and flowers."
                     print "\nForest animals are also represented on the surface."
                     print "\nYou push the chest lid open and inside you find %ssilver rings%s." % (magenta, default)
@@ -1387,7 +1388,7 @@ def west_tower():
     west_tower()
 
 def bedroom():
-    global bedroom_visited, barred_door_seen, bedroom_trap, altar, altar_seen, pictures, first, april_found, saved_player_HP, abhartach_killed, altar_dispell, silver_dagger, rings_taken, april_freed
+    global bedroom_visited, barred_door_seen, bedroom_trap, altar, altar_seen, pictures, first, april_found, saved_player_HP, abhartach_killed, altar_dispell, silver_dagger, rings_taken, april_freed, defense_activated
 
     print "\n..."
     time.sleep(3)
@@ -1438,7 +1439,7 @@ def bedroom():
         print "\nBefore you can say anything the man speaks:"
         print "\n\"So you found her? She's been here for a couple of days.\" he says with a brittish accent."
         print "\n\"Her friend has been resting with us as well, Greta took good care of him.\""
-        print "\n\"However, the plan was for her to stay here."
+        print "\n\"However, the plan was for her to stay here.\""
         p_scroll()
         print "\nThe man stands up and turns around, now facing you from across the room."
         print "\n\"The name is Abhartach.\" he calmly says with a smile."
@@ -1554,6 +1555,8 @@ def bedroom():
                 print specific_search
             elif ["search", "door"] == choice or ["search", "wooden", "door"] == choice:
                 print "\nWhich one?"
+            elif "left" in choice and paw_switch_on:
+                print "\nThe left door is barred with heavy metal spikes."
             elif "bed" in choice:
                 print "\nThe bed sheets and cover are folded with immaculate precision."
                 print "\nThe fabric is of excellent quality."
@@ -1597,39 +1600,41 @@ def bedroom():
                 print "\nIt feels somewhat electric."
                 print "\nIn the center of it is a triangle with a larger wolf symbol in the middle."
                 print "\nThe triangle has three animal coins going from top and clockwise: a %swhale%s, a %sstag%s and an %seagle%s." % (magenta, default, magenta, default, magenta, default)
-                print "\nThe center wolf symbol has a %sslit%s in its mouth. Something could probably fit in it." % (magenta, default)
+                print "\nThe center wolf symbol has a %sslit%s in its mouth and a %sring slot%s underneath it." % (magenta, default, magenta, default)
                 if silver_dagger == False:
                     print "\nYou don't know what to do with this."
                 elif silver_dagger:
                     print "\nIt looks like the %sdagger%s fits in the %sslit%s." % (magenta, default, magenta, default)
-                    while True:
+                    while altar_dispell == False:
                         print "\n\nShould you slide your %sdagger%s in it?" % (magenta, default)
                         choice = raw_input("\n%s(Type \"yes\" or \"no\".)%s\n\n> " % (gray, default)) 
                         if "yes" in choice:
+                            print "\nOnce inserted you rotate the dagger clockwise in it."
+                            print "\n..."
+                            time.sleep(3)
                             if rings_taken == False:
-                                print "\nYou slide it in the slit but nothing happens."
-                            elif rings_taken:
-                                print "\nYou slide it in and hear a click."
+                                print "\nBut nothing happens. You probably need to use to the ring slot for it to work."
+                                print "\nThere is nothing else you can do. You withdraw the dagger."
+                            if rings_taken:
+                                print "\nYou then press one of the rings you took earlier in the ring slot."
                                 print "\n..."
                                 time.sleep(3)
-                                print "\nYou notice the slit can rotate clockwise with the dagger in it."
-                                print "\nWhen you do so, a ring shaped slot appears in the altar."
-                                if rings_taken == False:
-                                    print "\nThere is nothing else you can do. You withdraw the dagger and the ring slot disappears."
-                                if rings_taken and abhartach_killed:
-                                    altar_dispell = True
-                                    defense_activated = False
-                                    print "\nYou then press one of the rings you took earlier in the ring slot."
-                                    print "\n..."
-                                    time.sleep(3)
+                                if abhartach_killed == False:
+                                    print "\nYou hear a voice in your head:"
+                                    print "\n%s\"The dagger must have met the caster's blood for the curse to be lifted.\"%s" % (bold, default)
+                                    print "\nYou withdraw the ring and the dagger."
+                                elif abhartach_killed:
                                     print "\nThe dagger suddenly starts vibrating and turning light blue."
                                     print "\nAs it vibrates more and more, it levitates above the slit, emiting electric arks between it and the altar."
                                     print "\nThe intensity rises, you take a few steps back."
                                     p_scroll()
                                     print "\nA blue spherical halo grows around the dagger, growing steadily bigger."
-                                    print "\nElectric arks run through the room."
+                                    print "\nElectric arks run through you and the room."
                                     print "\nWith an impressive thunder sound the dagger is absorbed into oblivion as the halo bursts."
                                     print "\nSoon, nothing is left from the dagger or the ring."
+                                    print "\nYou feel ok, although confused by what just happened."
+                                    altar_dispell = True
+                                    defense_activated = False
                             break
                         elif "no" in choice:
                             print "\nYou leave it alone."
@@ -1694,10 +1699,10 @@ def prison():
                 print "\nYou're already in the prison."
             else:
                 print invalid
-        elif ["search"] == choice:
-            print specific_search
         elif "search" in choice:
-            if "casket" in choice and silver_dagger == False:
+            if ["search"] == choice or ["search", "prison"] == choice or ["search", "room"] == choice:
+                print specific_search
+            elif "casket" in choice and silver_dagger == False:
                 print "\nIt is decorated with precious stones, fine ornaments and hieroglyphs."
                 print "\nA wolf sigil is at the center of it and on the sides."
                 print "\nYou notice the left side has some kind of mechanism."
@@ -1736,6 +1741,7 @@ def prison():
                         print "\nThe knob has the same wolf sigil you've seen around the manor."
                         print "\nSimilar hieroglyphs cover the blade. They look like runes."
                         print "\nHolding it in your hand is a sensation like you've never felt before."
+                        print "\nYou are now holding the dagger in one hand and your baseball bat in the other."
                         break
                     elif "exit" in choice:
                         print "\nYou leave the coins alone."
@@ -2098,7 +2104,7 @@ def kitchen():
             elif "drawers" in choice or "drawer" in choice and flashlight == False:
                 flashlight = True
                 print "\nOne of the drawers has blood stains on it."
-                print "\nInside are a cell-phone and an %sLED flashlight%s. Both are splattered with blood." % (magenta, default)
+                print "\nInside are a cell-phone and a headband %sLED flashlight%s. Both are splattered with blood." % (magenta, default)
                 print "\nThe cell-phone still has 3% battery and doesn't have a screen-lock."
                 print "\nThe phone screen is in the text messages menu:"
                 p_scroll()
@@ -2151,14 +2157,17 @@ def kitchen():
                     if "no" in choice:
                         print "\nYou leave the cans untouched."
                     elif "yes" in choice:
-                        if "one" in tin_cans:
-                            tin_cans = "zero"
-                        elif "two" in tin_cans:
-                            tin_cans = "one tin can"
-                        print "\nCold beans... Whatever, you feel much better."
-                        player_HP = 6
-                        saved_player_HP = player_HP
-                        p_player_HP(player_HP)
+                        if player_HP == 6:
+                            print "\nYou're not hungry right now.\n\n%s(Player health is at maximum.)%s" % (gray, default)
+                        elif player_HP < 6:
+                            if "one" in tin_cans:
+                                tin_cans = "zero"
+                            elif "two" in tin_cans:
+                                tin_cans = "one tin can"
+                            print "\nCold beans... Whatever, you feel much better."
+                            player_HP = 6
+                            saved_player_HP = player_HP
+                            p_player_HP(player_HP)
                 elif "zero" in tin_cans:
                     print "\nThere are no tin cans left."
             elif "windows" in choice or "window" in choice:
@@ -2174,11 +2183,11 @@ def kitchen():
 
 def main_room():
 
-    global bottle_switch_found, bottle_switch_on, pictures, bedroom_trap, altar, altar_dispell, defense_activated, grizzly_killed, saved_player_HP, first, april_freed, balcony_visited, rings_taken, bucket1, bucket2
+    global silver_dagger, bottle_switch_found, bottle_switch_on, pictures, bedroom_trap, altar, altar_dispell, defense_activated, grizzly_killed, saved_player_HP, first, april_freed, balcony_visited, rings_taken, bucket1, bucket2
     print "\n..."
     time.sleep(3)
     print "\n%s//// MAIN ROOM (FLOOR 1) \\\\\\\\\%s" % (cyan, default)
-    if defense_activated and altar_dispell == False:
+    if defense_activated:
         print "\n%sAs you climb down the last stair and touch the floor, you hear an extremely loud voice.%s" % (bold, default)
         p_scroll()
         print "\nThe voice is very deep and sounds like its coming from everywhere."
@@ -2529,9 +2538,12 @@ def gravel_path():
             elif ("yard" in choice or "gate" in choice) and greta_dead:
                 print "\nYou open the rusty gate and walk back to the yard."
                 yard()
-            elif "yard" in choice or "gate" in choice and greta_dead == False:
+            elif ("door" in choice or "cellar" in choice or "inside" in choice or "manor" in choice or "yard" in choice or "gate" in choice) and greta_dead == False:
                 first = "enemy"
-                print "\nRight as you're about to push the gate open, you hear a shriek coming from behind you."
+                if "yard" in choice or "gate" in choice:
+                    print "\nRight as you're about to push the gate open, you hear a shriek coming from behind you."
+                elif "door" in choice or "cellar" in choice or "inside" in choice or "manor" in choice:
+                    print "\nAs soon as you touch the wooden door you hear a shriek coming from behind you."
                 print "\nSomething jumps on your back and you then feel a knife sting in your right arm."
                 p_scroll()
                 print "\nYou roll over to the side and throw whatever is on your back to the ground."
@@ -2956,11 +2968,11 @@ def start():
     p_scroll()
     dream()
 #yard()
-start()   
+#start()   
 #gravel_path()
 #cellar()
 #wake_up()
-#main_room()
+main_room()
 #kitchen()
 #storage()
 #prison()
