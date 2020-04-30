@@ -105,7 +105,7 @@ bucket2 = False
 
 first = "enemy"
 saved_player_HP = None
-tin_cans = "two tin cans"
+tin_cans = "three tin cans"
 
 def rand(item):
     rand = random.choice(item)
@@ -1480,11 +1480,6 @@ def bedroom():
             print "\n\"I never quite understood how love and bonding could make you do such insensible things.\""
             print "\n\"En guarde sir.\" he finally adds."
             first = "player"
-            if rings_taken:
-                rings_taken = False
-                battle(Abhartach, west_tower, ["silver dagger", "dagger", "dagger", "weapon", "blade"])
-                rings_taken = True
-            if rings_taken == False:
                 battle(Abhartach, main_room, ["silver dagger", "dagger", "dagger", "weapon", "blade"])
             abhartach_killed = True
             print "\nHe reaches for you with the tip of one of his scizor fingers."
@@ -1524,7 +1519,7 @@ def bedroom():
         elif "go" in choice:
             if "bedroom" in choice:
                 print "\nYou're already in the bedroom."
-            elif "balcony" in choice or "entrance" in choice or "double" in choice:
+            elif "balcony" in choice or "entrance" in choice or "double" in choice or "outside" in choice:
                 print "\nYou step back on the balcony."
                 bedroom_visited = True
                 balcony()
@@ -1609,11 +1604,11 @@ def bedroom():
                         print "\n\nShould you slide your %sdagger%s in it?" % (magenta, default)
                         choice = raw_input("\n%s(Type \"yes\" or \"no\".)%s\n\n> " % (gray, default)) 
                         if "yes" in choice:
-                            print "\nOnce inserted you rotate the dagger clockwise in it."
+                            print "\nOnce inserted you rotate the dagger clockwise in the slit."
                             print "\n..."
                             time.sleep(3)
                             if rings_taken == False:
-                                print "\nBut nothing happens. You probably need to use to the ring slot for it to work."
+                                print "\nBut nothing happens. You probably need to use the ring slot for it to work."
                                 print "\nThere is nothing else you can do. You withdraw the dagger."
                             if rings_taken:
                                 print "\nYou then press one of the rings you took earlier in the ring slot."
@@ -1692,7 +1687,7 @@ def prison():
             if bucket2:
                 print paper2
         elif "go" in choice:
-            if "cellar" in choice or "door" in choice:
+            if "cellar" in choice or "door" in choice or "outside" in choice:
                 print "\nYou step out of the prison."
                 cellar()
             elif "prison" in choice:
@@ -1725,7 +1720,7 @@ def prison():
                         print "\nHowever a strange glowing metal lights the interior."
                         print "\nInside is a dead man's body wearing an armor with a silver dagger stuck through its chest."
                         if pictures:
-                            print "\nYou recognize the man: he is the one on the pictures in the manor."
+                            print "\nYou recognize the man: he is the one on the pictures in the staircase of the manor."
                         print "\nThe armored corpse is holding the dagger in a self stabbing motion."
                         print "\nThis is certainly the %sdagger%s Josh tried to text you about." % (magenta, default)
                         p_scroll()
@@ -1950,7 +1945,7 @@ def balcony():
             elif "main" in choice or "down" in choice or "downstairs" in choice or "stairs" in choice or "first" in choice or "ground" in choice:
                 print "\nYou climb down the stairs."
                 main_room()
-            elif "bedroom" in choice or "entrance" in choice or "door" in choice:
+            elif "bedroom" in choice or "entrance" in choice or "door" in choice or "inside" in choice:
                 print "\nYou push the double door open and enter the next room."
                 bedroom()
             elif "windows" in choice or "window" in choice:
@@ -2164,6 +2159,8 @@ def kitchen():
                                 tin_cans = "zero"
                             elif "two" in tin_cans:
                                 tin_cans = "one tin can"
+                            elif "three" in tin_cans:
+                                tin_cans = "two tin cans."
                             print "\nCold beans... Whatever, you feel much better."
                             player_HP = 6
                             saved_player_HP = player_HP
@@ -2355,18 +2352,27 @@ def main_room():
                             else:
                                 print invalid
             elif "library" in choice or "bookshelf" in choice or "shelves" in choice or "books" in choice:
+                if grizzly_killed:
+                    print "\nSome of the books are now on the floor."
                 print "\nOld books and strange objects are on the shelves:"
                 print "\nA bronze world-globe, a human skull and a crow claw, amongst other things."
                 print "\nSome of the books have unreadable hieroglyphs."
             elif "table" in choice:
                 if "living" in choice and "room" in choice:
                     print "\nA finely decorated table."
+                    if grizzly_killed:
+                        print "\nIt has taken damage from the battle."
                 elif "dining" in choice or "middle" in choice:
-                    print "\nThe table is covered in dust and cobwebs, it looks like it hasn't been touched in a while."
+                    if grizzly_killed == False:
+                        print "\nThe table is covered in dust and cobwebs, it looks like it hasn't been touched in a while."
+                    elif grizzly_killed:
+                        print "\nThe table has been shaken so bad there's barely anything left on it. Most of the items are on the floor."
                 else:
                     print nothing
             elif "living" in choice and "room" in choice:
                 print "\nFinely decorated furniture. Comfortable chairs and table."
+                if grizzly_killed:
+                    print "\nIt has taken damage from the battle."
             elif "statues" in choice or "balcony" in choice:
                 print "\nYou'd need to climb upstairs to the balcony to do that."
             elif "fireplace" in choice:
@@ -2378,6 +2384,8 @@ def main_room():
             elif "grizzly" in choice or "bear" in choice and grizzly_killed:
                 print "\nThe bear has disappeared."
             elif "photos" in choice or "photographs" in choice or "pictures" in choice or "pics" in choice or "stairway" in choice or "stairs" in choice:
+                if grizzly_killed:
+                    print "\nSome pictures have fallen to the floor while you were fighting the grizzly."
                 print "\nA white haired man appears in most pictures."
                 if silver_dagger:
                     print "\nThis is the man in the casket."
@@ -2437,7 +2445,7 @@ def cellar():
                 print "\nYou walk back out."
                 gravel_path()
             elif "door" in choice or "prison" in choice:
-                if "prison" in choice or "steel" in choice or "metal" in choice or "heavy" in choice:
+                if "prison" in choice or "steel" in choice or "metal" in choice or "heavy" in choice and "inside" in choice:
                     if prison_unlocked:
                         print "\nYou enter the prison."
                         prison()
@@ -2532,7 +2540,7 @@ def gravel_path():
         elif "go" in choice:
             if "path" in choice:
                 print "\nYou're already on the gravel path."
-            elif "door" in choice or "cellar" in choice or "inside" in choice or "manor" in choice:
+            elif ("door" in choice or "cellar" in choice or "inside" in choice or "manor" in choice) and greta_dead:
                 print "\nYou push and walk through the wooden door."
                 cellar()
             elif ("yard" in choice or "gate" in choice) and greta_dead:
